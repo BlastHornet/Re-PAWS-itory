@@ -1,0 +1,51 @@
+groupadd admins
+groupadd moderators
+groupadd students
+sudo useradd -M -d /delta0 user0 sudo
+useradd -G -d /delta1 admins user1
+useradd -G -d /delta2 admins user2
+useradd -G -d /delta3 admins user3
+useradd -G -d /delta4 moderators user4
+useradd -G -d /delta5 moderators user5
+useradd -G -d /delta6 moderators user6
+useradd -G -d /delta7 students user7
+useradd -G -d /delta8 students user8
+useradd -G -d /delta9 students user9
+for i in {0..9}
+do
+	for j in {0..9}
+	do
+		mkdir /delta$i/folder$j
+		touch /delta$i/folder$j/text$i$j.txt
+		echo "ncbdf39r98" >> /delta$i/folder$j/text$i$j.txt
+	done
+done
+for i in {1..9}
+do
+	for j in {1..9}
+	do
+		setfacl -x "u:user$i:rwx" /delta$j
+	done
+done
+for i in {4..6}
+do
+	setfacl -m "g:admins:rwx" /delta$i
+	setfacl -x "g:moderators:rwx" /delta$(i-3)
+	setfacl -x "g:students:rwx" /delta$(i-3)
+	setfacl -x "g:students:rwx" /delta$i
+done
+for i in {7..9}
+do
+	setfacl -m "g:admins:rwx" /delta$i
+	setfacl -m "g:moderators:rwx" /delta$i
+done
+for i in {1..9}
+do
+	setfacl -m "u:user0:rwx" /delta$i
+	
+done
+setfacl -x "g:admins:rwx" /delta0
+setfacl -x "g:moderators:rwx" /delta0
+setfacl -x "g:students:rwx" /delta0
+
+
